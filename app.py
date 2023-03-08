@@ -4,6 +4,15 @@ import spacy
 import streamlit as st
 import pandas as pd
 
+# Load the required spaCy model
+try:
+    nlp = spacy.load('en_core_web_sm')
+except OSError:
+    # Download the model if it's not available
+    import subprocess
+    subprocess.run(['python', '-m', 'spacy', 'download', 'en_core_web_sm'])
+    nlp = spacy.load('en_core_web_sm')
+
 # Define a dictionary of keywords and scores
 keywords = {
     'Python': 5,
