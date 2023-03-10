@@ -6,25 +6,51 @@ import pandas as pd
 
 # Load the required spaCy model
 try:
-    nlp = spacy.load('en_core_web_sm')
+    nlp = spacy.load('/path/to/en_core_web_sm')
 except OSError:
     # Download the model if it's not available
     import subprocess
     subprocess.run(['python', '-m', 'spacy', 'download', 'en_core_web_sm'])
     nlp = spacy.load('en_core_web_sm')
 
-# Define a dictionary of keywords and scores
-keywords = {
-    'Python': 5,
-    'Java': 3,
-    'Machine Learning': 7,
-    'Data Analysis': 4
+# Define a dictionary of categories and their corresponding keywords and scores
+categories = {
+    'optimization': {
+        'tuning': 3,
+        'performance': 2,
+        'query performance': 1,
+        'tuning advisor': 1
+    },
+    'tuning': {
+        'tuning': 4,
+        'performance': 2,
+        'query performance': 2,
+        'tuning advisor': 1
+    },
+    'performance': {
+        'tuning': 2,
+        'performance': 4,
+        'query performance': 2,
+        'tuning advisor': 1
+    },
+    'query performance': {
+        'tuning': 1,
+        'performance': 2,
+        'query performance': 3,
+        'tuning advisor': 2
+    },
+    'tuning advisor': {
+        'tuning': 1,
+        'performance': 1,
+        'query performance': 2,
+        'tuning advisor': 3
+    }
 }
+
 
 # Load the spacy model
 nlp = spacy.load('en_core_web_sm')
 
-# Create the Streamlit app
 def app():
     st.title('CV Keyword Rating App')
 
@@ -45,16 +71,28 @@ def app():
                 text += pdf_reader.pages[page].extract_text()
 
             # Analyze the text for keywords
-            doc = nlp(text)
-            score = 0
+            doc = nlp(text.lower())
+            category_scores = {k: 0 for k in categories.keys()}
+            total_score = 0
 
-            for keyword, weight in keywords.items():
-                count = sum(1 for token in doc if token.text.lower() == keyword.lower())
-                score += count * weight
+            # Check for keywords in the text
+            for category, keywords in categories.items():
+                category_score = 0
+                for keyword, score in keywords.items():
+                    if keyword in text.lower():
+                        category_score += score
+                        total_score += score
+                category_scores[category] = category_score
+
+            # Calculate full score and score percentage
+            full_score = sum(categories[c].get(k, 0) for c in categories for k in categories[c])
+            score_pct = total_score / full_score if full_score > 0 else 0
 
             # Add the results to the list
             filename = uploaded_file.name
-            results.append({'Filename': filename, 'Score': score, **keywords})
+            result = {'Filename': filename,'Full Score': full_score, 'CV Score': total_score,  'Score PCT%': (str(round(score_pct*100))+'%')}
+            result.update(category_scores)
+            results.append(result)
 
         # Display the results in a table
         df = pd.DataFrame(results)
