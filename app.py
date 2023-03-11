@@ -3,43 +3,27 @@ import PyPDF2
 import streamlit as st
 import pandas as pd
 from collections import defaultdict
+import re
 
-# Define a dictionary of categories and their corresponding keywords and scores
-categories = {
-    'optimization': {
-        'tuning': 3,
-        'performance': 2,
-        'query performance': 1,
-        'tuning advisor': 1
-    },
-    'tuning': {
-        'tuning': 4,
-        'performance': 2,
-        'query performance': 2,
-        'tuning advisor': 1
-    },
-    'performance': {
-        'tuning': 2,
-        'performance': 4,
-        'query performance': 2,
-        'tuning advisor': 1
-    },
-    'query performance': {
-        'tuning': 1,
-        'performance': 2,
-        'query performance': 3,
-        'tuning advisor': 2
-    },
-    'tuning advisor': {
-        'tuning': 1,
-        'performance': 1,
-        'query performance': 2,
-        'tuning advisor': 3
-    }
-}
+# Define a regex pattern to match emails
+email_regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
 
 def app():
     st.title('CV Keyword Rating App')
+    st.text('Add your Categories, Keywords entire each Category & Score')
+
+    # Get user input for categories, keywords, and scores
+    categories = {}
+    num_categories = st.number_input('Number of categories', min_value=1, max_value=10, value=5)
+    for i in range(num_categories):
+        category_name = st.text_input(f'Category {i+1} name')
+        num_keywords = st.number_input(f'Number of keywords for {category_name}', min_value=1, max_value=20, value=3)
+        keywords = {}
+        for j in range(num_keywords):
+            keyword_name = st.text_input(f'Keyword {j+1} for {category_name}')
+            keyword_score = st.number_input(f'Score for {keyword_name}', min_value=1, max_value=10, value=3)
+            keywords[keyword_name.lower()] = keyword_score
+        categories[category_name.lower()] = keywords
 
     # Create a file uploader for PDF files
     uploaded_files = st.file_uploader('Upload one or more CVs in PDF format', type='pdf', accept_multiple_files=True)
@@ -56,6 +40,14 @@ def app():
 
             for page in range(len(pdf_reader.pages)):
                 text += pdf_reader.pages[page].extract_text()
+
+            # Remove newlines, extra spaces and tabs from text
+            text = re.sub(r'\n', ' ', text)
+            text = re.sub(r' +', ' ', text)
+            text = re.sub(r'\t', '', text)
+
+            # Remove email addresses from text
+            text = re.sub(email_regex, '', text)
 
             # Analyze the text for keywords
             category_scores = defaultdict(int)
