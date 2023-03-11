@@ -4,6 +4,10 @@ import spacy
 import streamlit as st
 import pandas as pd
 
+# Download the spaCy model if it's not available
+import subprocess
+subprocess.run(['python', '-m', 'spacy', 'download', 'en_core_web_sm'])
+
 # Load the required spaCy model
 try:
     nlp = spacy.load('/path/to/en_core_web_sm')
