@@ -1,21 +1,8 @@
 import os
 import PyPDF2
-import spacy
 import streamlit as st
 import pandas as pd
-
-# Download the spaCy model if it's not available
-import subprocess
-subprocess.run(['python', '-m', 'spacy', 'download', 'en_core_web_sm'])
-
-# Load the required spaCy model
-try:
-    nlp = spacy.load('path/to/en_core_web_sm')
-except OSError:
-    # Download the model if it's not available
-    import subprocess
-    subprocess.run(['python', '-m', 'spacy', 'download', 'en_core_web_sm'])
-    nlp = spacy.load('path/to/en_core_web_sm')
+from collections import defaultdict
 
 # Define a dictionary of categories and their corresponding keywords and scores
 categories = {
@@ -51,10 +38,6 @@ categories = {
     }
 }
 
-
-# Load the spacy model
-nlp = spacy.load('en_core_web_sm')
-
 def app():
     st.title('CV Keyword Rating App')
 
@@ -75,8 +58,7 @@ def app():
                 text += pdf_reader.pages[page].extract_text()
 
             # Analyze the text for keywords
-            doc = nlp(text.lower())
-            category_scores = {k: 0 for k in categories.keys()}
+            category_scores = defaultdict(int)
             total_score = 0
 
             # Check for keywords in the text
