@@ -5,6 +5,9 @@ import pandas as pd
 from collections import defaultdict
 import re
 
+# Set page title and favicon
+st.set_page_config(page_title="CV Ratings", page_icon="N5ZUyMw5.ico" , layout='wide')
+
 hide_streamlit_style = """
             <style>
             #MainMenu {visibility: hidden;}
