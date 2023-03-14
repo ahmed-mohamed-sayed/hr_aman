@@ -8,8 +8,7 @@ import streamlit_authenticator as stauth
 import yaml
 from yaml.loader import SafeLoader
 from streamlit_option_menu import option_menu
-from streamlit_lottie import st_lottie
-import json
+
 
 
 
