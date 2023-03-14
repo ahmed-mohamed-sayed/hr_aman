@@ -8,6 +8,8 @@ import streamlit_authenticator as stauth
 import yaml
 from yaml.loader import SafeLoader
 from streamlit_option_menu import option_menu
+from streamlit_lottie import st_lottie
+import json
 
 
 
@@ -41,7 +43,8 @@ authenticator = stauth.Authenticate(
     config['cookie']['expiry_days'],
     config['preauthorized']
 )
-
+ 
+st.image('banner.png' )
 name, authentication_status, username = authenticator.login('Login', 'main')
 
 
@@ -68,21 +71,32 @@ elif st.session_state["authentication_status"]:
                 default_index = 0,
                 styles={
                         "container": {"padding": "0!important", "background-color": "#fafafa"},
-                        "icon": {"color": "orange", "font-size": "15px"},
+                        "icon": {"color": "#f0f2f2", "font-size": "15px"},
                         "nav-link": {
                             "font-size": "15px",
                             "text-align": "left",
                             "margin": "0px",
                             "--hover-color": "#f0f0f0",
                         },
-                        "nav-link-selected": {"background-color": '#C00000'},
+                        "nav-link-selected": {"background-color": '#2ba8bb'},
                     },
                                      
         )
             authenticator.logout('Logout', 'sidebar')
+            # add blank spaces between raya logo & logout button
+            st.write("")
+            st.write("")
+            st.write("")
+            st.write("")
+            st.write("")
+            st.write("")
+            st.write("")
+            st.write("")
+            st.write("")
+            st.image('raya.png')
         if selected == 'DBA':
-            st.markdown("<h2 style='text-align: center; font-weight:bold; color: #354968;'> Databse Department</h2> " ,unsafe_allow_html=True)
-            st.markdown("<h5 style='text-align: center; font-weight:bold; color: #C00000;'> 'Categories are predefined. Please add your keywords & score entire each category' </h5> " ,unsafe_allow_html=True)
+            st.markdown("<h2 style='text-align: center; font-weight:bold; color: #354968;'> Database Department</h2> " ,unsafe_allow_html=True)
+            st.markdown("<h5 style='text-align: center; font-weight:bold; color: #af5f38;'> 'Categories are predefined. Please add your keywords & score entire each category' </h5> " ,unsafe_allow_html=True)
             #bold line separator:
             st.markdown("""<hr style="height:2x;border:none;color:#C00000;background-color:#C00000;" /> """, unsafe_allow_html=True)
             # Define a regex pattern to match emails
@@ -185,7 +199,7 @@ elif st.session_state["authentication_status"]:
                 st.write(df)
         if selected == 'Analytics':
             st.markdown("<h2 style='text-align: center; font-weight:bold; color: #354968;'> Analytics Department</h2> " ,unsafe_allow_html=True)
-            st.markdown("<h5 style='text-align: center; font-weight:bold; color: #C00000;'> 'Categories are predefined. Please add your keywords & score entire each category' </h5> " ,unsafe_allow_html=True)
+            st.markdown("<h5 style='text-align: center; font-weight:bold; color: #af5f38;'> 'Categories are predefined. Please add your keywords & score entire each category' </h5> " ,unsafe_allow_html=True)
             #bold line separator:
             st.markdown("""<hr style="height:2x;border:none;color:#C00000;background-color:#C00000;" /> """, unsafe_allow_html=True)
             # Define a regex pattern to match emails
@@ -288,7 +302,7 @@ elif st.session_state["authentication_status"]:
                 st.write(df)
         if selected == 'Finance':
             st.markdown("<h2 style='text-align: center; font-weight:bold; color: #354968;'> Finance  Department</h2> " ,unsafe_allow_html=True)
-            st.markdown("<h5 style='text-align: center; font-weight:bold; color: #C00000;'> 'Categories are predefined. Please add your keywords & score entire each category' </h5> " ,unsafe_allow_html=True)
+            st.markdown("<h5 style='text-align: center; font-weight:bold; color: #af5f38;'> 'Categories are predefined. Please add your keywords & score entire each category' </h5> " ,unsafe_allow_html=True)
             #bold line separator:
             st.markdown("""<hr style="height:2x;border:none;color:#C00000;background-color:#C00000;" /> """, unsafe_allow_html=True)
             # Define a regex pattern to match emails
