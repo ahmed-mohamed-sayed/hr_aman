@@ -1,0 +1,16 @@
+credentials:
+  usernames:
+    agohary:
+      email: 
+      name: Ahmed Gohary
+      password: '$2b$12$1pUDMWMjPSJlzzKs63FE8eAhDvajQCueb3G.rwlzuprJU3bbut/xq'
+    shrazek:
+      email: 
+      name: Shymaa Abd Elrazek
+      password: '$2b$12$cOa0a96/G/4BWPYxmDTVmO.USktDntFQwrdsjFNO3QHFbaFJyUtfu'
+cookie:
+  expiry_days: 30
+  key: random_signature_key
+  name: random_cookie_name
+preauthorized:
+  emails:
